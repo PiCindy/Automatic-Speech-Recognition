@@ -1,7 +1,7 @@
-import decoder_jsgf_1digit
-import decoder_jsgf_3digit
-import decoder_jsgf_5digit
-import decoder_jsgf_digitloop
-import decoder_ngram_digitloop
+import lang_mod.decoder_jsgf_1digit
+import lang_mod.decoder_jsgf_3digit
+import lang_mod.decoder_jsgf_5digit
+import lang_mod.decoder_jsgf_digitloop
+import lang_mod.decoder_ngram_digitloop
 
-import results
+import lang_mod.results
