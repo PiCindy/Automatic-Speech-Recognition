@@ -13,20 +13,26 @@ config.set_string('-lm',   'ps_data/lm/turtle.lm.bin')
 config.set_string('-dict', 'ps_data/lex/digits.dic')
 decoder = Decoder(config)
 
-# Switch to JSGF grammar
-jsgf = Jsgf('ps_data/jsgf/digits.gram')
-rule = jsgf.get_rule('digits.3digit')
-fsg = jsgf.build_fsg(rule, decoder.get_logmath(), 7.5)
-fsg.writefile('output/3digit.fsg')
+seq_lengths = ['1digit', '3digit', '5digit']
+folders = [r'SNR35dB/man/seq1digit_200_files/*.raw', r'SNR35dB/man/seq3digits_100_files/*.raw', r'SNR35dB/man/seq5digits_100_files/*.raw']
 
-decoder.set_fsg("3digit", fsg)
-decoder.set_search("3digit")
+open('results/noise/SNR35dB.hyp', 'w').close()
+open('results/noise/SNR35dB.ref', 'w').close()
 
-hypos, refs = [], []
-speaker_groups = [r'SNR35dB/man/seq3digits_100_files/*.raw', r'SNR35dB/woman/seq3digits_100_files/*.raw']
+for seq, folder in zip(seq_lengths, folders):
 
-for group in speaker_groups:
-    for file in glob.glob(group):
+    # Switch to JSGF grammar
+    jsgf = Jsgf('ps_data/jsgf/digits.gram')
+    rule = jsgf.get_rule('digits.'+seq)
+    fsg = jsgf.build_fsg(rule, decoder.get_logmath(), 7.5)
+    fsg.writefile('output/'+seq+'.fsg')
+
+    decoder.set_fsg(seq, fsg)
+    decoder.set_search(seq)
+
+    hypos, refs = [], []
+
+    for file in glob.glob(folder):
         decoder.start_utt()
         stream = open(file, 'rb')
         while True:
@@ -47,10 +53,12 @@ for group in speaker_groups:
         with open(file.replace('raw', 'ref'), 'r') as ref_file:
             refs.append(ref_file.read().rstrip())
 
-with open('results/length/3digit.hyp', 'w') as f:
-    for hypo in hypos:
-        f.write(f'{hypo}\n')
+    with open('results/noise/SNR35dB.hyp', 'a') as f:
+        for hypo in hypos:
+            f.write(f'{hypo}\n')
+        f.write('\n')
 
-with open('results/length/3digit.ref', 'w') as f:
-    for ref in refs:
-        f.write(f'{ref}\n')
+    with open('results/noise/SNR35dB.ref', 'a') as f:
+        for ref in refs:
+            f.write(f'{ref}\n')
+        f.write('\n')

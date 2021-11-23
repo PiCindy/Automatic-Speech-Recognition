@@ -40,7 +40,7 @@ for file in glob.glob(r'SNR35dB/man/seq3digits_100_files/*.raw'):
     if hypothesis and hypothesis.hypstr:
         hypos.append(hypothesis.hypstr)
     else:
-        hypos.append('')
+        hypos.append('_')
 
     with open(file.replace('raw', 'ref'), 'r') as ref_file:
         refs.append(ref_file.read().rstrip())

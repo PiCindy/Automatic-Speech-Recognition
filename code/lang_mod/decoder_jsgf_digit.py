@@ -48,7 +48,7 @@ for seq, folder in zip(seq_lengths, folders):
         if hypothesis and hypothesis.hypstr:
             hypos.append(hypothesis.hypstr)
         else:
-            hypos.append('')
+            hypos.append('_')
 
         with open(file.replace('raw', 'ref'), 'r') as ref_file:
             refs.append(ref_file.read().rstrip())
