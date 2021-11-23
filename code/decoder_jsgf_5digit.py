@@ -45,10 +45,10 @@ for file in glob.glob(r'SNR35dB/man/seq5digits_100_files/*.raw'):
     with open(file.replace('raw', 'ref'), 'r') as ref_file:
         refs.append(ref_file.read().rstrip())
 
-with open('results/5digit.hyp', 'w') as f:
+with open('results/lang_mod/5digit.hyp', 'w') as f:
     for hypo in hypos:
         f.write(f'{hypo}\n')
 
-with open('results/5digit.ref', 'w') as f:
+with open('results/lang_mod/5digit.ref', 'w') as f:
     for ref in refs:
         f.write(f'{ref}\n')

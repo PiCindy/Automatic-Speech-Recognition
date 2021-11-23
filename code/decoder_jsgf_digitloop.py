@@ -45,10 +45,10 @@ for file in glob.glob(r'SNR35dB/man/*/*.raw'):
     with open(file.replace('raw', 'ref'), 'r') as ref_file:
         refs.append(ref_file.read().rstrip())
 
-with open('results/digitloop.hyp', 'w') as f:
+with open('results/lang_mod/digitloop.hyp', 'w') as f:
     for hypo in hypos:
         f.write(f'{hypo}\n')
 
-with open('results/digitloop.ref', 'w') as f:
+with open('results/lang_mod/digitloop.ref', 'w') as f:
     for ref in refs:
         f.write(f'{ref}\n')
