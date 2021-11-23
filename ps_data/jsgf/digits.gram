@@ -1,0 +1,17 @@
+#JSGF V1.0;
+
+/**
+ * JSGF Grammar for Turtle example
+ */
+
+grammar digits;
+
+public <digitloop> = <digit> +;
+
+public <1digit> = <digit>;
+
+public <3digit> = <digit> <digit> <digit>;
+
+public <5digit> = <digit> <digit> <digit> <digit> <digit>;
+
+<digit> = zero | one | two | three | four | five | six | seven | eight | nine | oh;
