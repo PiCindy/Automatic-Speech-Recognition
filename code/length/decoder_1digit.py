@@ -23,10 +23,12 @@ decoder.set_fsg("1digit", fsg)
 decoder.set_search("1digit")
 
 hypos, refs = [], []
+# Get all 1 digit files for man and woman category
 speaker_groups = [r'SNR35dB/man/seq1digit_200_files/*.raw', r'SNR35dB/woman/seq1digit_200_files/*.raw']
 
 for group in speaker_groups:
     for file in glob.glob(group):
+	# Start decoding utterances
         decoder.start_utt()
         stream = open(file, 'rb')
         while True:
@@ -36,7 +38,7 @@ for group in speaker_groups:
             else:
                  break
         decoder.end_utt()
-
+	# Create hypotheses
         hypothesis = decoder.hyp()
 
         if hypothesis and hypothesis.hypstr:
@@ -46,11 +48,11 @@ for group in speaker_groups:
 
         with open(file.replace('raw', 'ref'), 'r') as ref_file:
             refs.append(ref_file.read().rstrip())
-
+# Create hypotheses files
 with open('results/length/1digit.hyp', 'w') as f:
     for hypo in hypos:
         f.write(f'{hypo}\n')
-
+# Create references files
 with open('results/length/1digit.ref', 'w') as f:
     for ref in refs:
         f.write(f'{ref}\n')

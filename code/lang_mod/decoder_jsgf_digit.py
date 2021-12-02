@@ -6,7 +6,7 @@ import glob
 from pocketsphinx import *
 from sphinxbase import *
 
-# Create a decoder with certain model
+# Create a decoder with a certain model
 config = Decoder.default_config()
 config.set_string('-hmm',  'ps_data/model/en-us')
 config.set_string('-lm',   'ps_data/lm/turtle.lm.bin')
@@ -21,7 +21,7 @@ open('results/lang_mod/digit.ref', 'w').close()
 
 for seq, folder in zip(seq_lengths, folders):
 
-    # Switch to JSGF grammar
+    # Switch to JSGF grammar, for 1, 3 or 5 digit sequences
     jsgf = Jsgf('ps_data/jsgf/digits.gram')
     rule = jsgf.get_rule('digits.'+seq)
     fsg = jsgf.build_fsg(rule, decoder.get_logmath(), 7.5)
@@ -31,8 +31,9 @@ for seq, folder in zip(seq_lengths, folders):
     decoder.set_search(seq)
 
     hypos, refs = [], []
-
+# Iterate through all folders (1digit, 3digit, 5digit)
     for file in glob.glob(folder):
+# Start decoding utterances
         decoder.start_utt()
         stream = open(file, 'rb')
         while True:
@@ -42,7 +43,7 @@ for seq, folder in zip(seq_lengths, folders):
             else:
                  break
         decoder.end_utt()
-
+	# Create hypothesis
         hypothesis = decoder.hyp()
 
         if hypothesis and hypothesis.hypstr:
@@ -52,12 +53,12 @@ for seq, folder in zip(seq_lengths, folders):
 
         with open(file.replace('raw', 'ref'), 'r') as ref_file:
             refs.append(ref_file.read().rstrip())
-
+    # Create hypothesis files
     with open('results/lang_mod/digit.hyp', 'a') as f:
         for hypo in hypos:
             f.write(f'{hypo}\n')
         f.write('\n')
-
+    # Create references files
     with open('results/lang_mod/digit.ref', 'a') as f:
         for ref in refs:
             f.write(f'{ref}\n')
